@@ -126,10 +126,11 @@ audio{width:100%;margin-top:10px}
  </form></div></section>
 
 <section id="ok" class="v"><div class="done"><div class="ok">✓</div><h2>تم التسجيل</h2><p class="m">هتراجع الإدارة بياناتك وتتواصل معك قريبًا.</p><button class="btn g" data-go="home">الرجوع للرئيسية</button></div></section>
+<p class="m" style="text-align:center;margin-top:28px">إصدار 4</p>
 </main>
 <script>
 var ENDPOINT="https://script.google.com/macros/s/AKfycbzJfgqgXZoqKfZECYFvobSSsuTVsDs5rnTP-WpoAYncBLAvvN0gG8L--KsHE4gZtjCr/exec";
-var MAX=50*1024*1024, CHUNK=1572864; // 1.5MB لكل جزء (مضاعف 3 للـ base64)
+var SINGLE=12*1024*1024,MAX=50*1024*1024, CHUNK=1572864; // 1.5MB لكل جزء (مضاعف 3 للـ base64)
 var CATS=["دبلجة أفلام ومسلسلات","إعلانات","كتب صوتية","تعليق وثائقي","ألعاب فيديو","IVR ومساعد صوتي","تعليمي / إلكترونيكس"];
 var DIAS=["فصحى","مصرية","خليجية","سعودية","شامية","مغاربية","إنجليزي"];
 var NATS=["مصري","سعودي","إماراتي","كويتي","قطري","بحريني","عماني","أردني","لبناني","سوري","عراقي","فلسطيني","يمني","سوداني","ليبي","تونسي","جزائري","مغربي"];
@@ -193,8 +194,10 @@ function submit(){
  function up(){
   if(i>=n)return Promise.resolve();
   return b64(f.slice(i*CHUNK,(i+1)*CHUNK)).then(function(a){return postRetry({up:id,i:i,data:a},2)}).then(function(){i++;bar.firstChild.style.width=Math.round(i/n*100)+"%";return up()})}
- up().then(function(){
-  var d={website:$("website").value,up:id,n:n,final:1,audioType:(f.type||"audio/webm").split(";")[0]};
+ var small=f.size<=SINGLE; // ملف صغير: طلب واحد (يشتغل مع الكود القديم والجديد)
+ (small?b64(f):up().then(function(){return null})).then(function(a){
+  var d={website:$("website").value,audioType:(f.type||"audio/webm").split(";")[0]};
+  if(small)d.audio=a;else{d.up=id;d.n=n;d.final=1}
   ["name","stage","gen","age","nat","city","exp","phone","mail","bank","iban","rate","studio","bio"].forEach(function(k){d[k]=$(k).value.trim()});
   d.cats=vals("c");d.dias=vals("d");if(d.rate)d.rate=d.rate+" "+$("cur").value+" / ساعة";
   return postRetry(d,2)
