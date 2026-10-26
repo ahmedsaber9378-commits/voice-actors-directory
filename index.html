@@ -65,25 +65,19 @@ audio{width:100%;margin-top:10px}
 </head>
 <body>
 <header><div class="brand" data-go="home"><span class="dot"></span>أصوات</div>
-<nav><button data-go="home" class="on">الرئيسية</button><button data-go="dir">الأصوات</button><button data-go="reg" class="cta">سجّل</button></nav></header>
+<nav><button data-go="home" class="on">الرئيسية</button><button data-go="reg" class="cta">سجّل</button></nav></header>
 <main>
 
 <section id="home" class="v on">
  <div class="hero"><h1>سجّل صوتك، وخلّي المشاريع تلاقيك</h1>
- <p>منصة للمدبلجين والمعلقين الصوتيين. سجّل بياناتك وعينتك في دقائق، وبعد مراجعة الإدارة يظهر صوتك للعملاء.</p>
- <button class="btn big" data-go="reg">سجّل الآن</button> <button class="btn g big" data-go="dir">تصفّح الأصوات</button>
+ <p>منصة للمدبلجين والمعلقين الصوتيين. سجّل بياناتك وعينتك في دقائق، وبعد مراجعة الإدارة يتواصل معك الفريق.</p>
+ <button class="btn big" data-go="reg">سجّل الآن</button>
  <div class="wave" id="wave" aria-hidden="true"></div></div>
  <div class="steps">
   <div class="box"><b>1</b>بياناتك<p>الاسم الفني والجنسية والخبرة.</p></div>
   <div class="box"><b>2</b>عينتك الصوتية<p>ارفع ملف أو سجّل مباشرة من الموبايل.</p></div>
   <div class="box"><b>3</b>بيانات التواصل<p>تصل للإدارة فقط ولا تظهر للعملاء.</p></div>
  </div>
-</section>
-
-<section id="dir" class="v">
- <div class="f"><input id="q" placeholder="ابحث بالاسم أو المدينة…"><select id="fCat"><option value="">كل الأنواع</option></select><select id="fDia"><option value="">كل اللهجات</option></select><select id="fGen"><option value="">الكل</option><option>رجالي</option><option>نسائي</option><option>أطفال</option></select></div>
- <div id="list" class="grid"></div>
- <div id="empty" class="m" style="text-align:center;padding:30px 0"></div>
 </section>
 
 <section id="reg" class="v"><div class="wiz">
@@ -110,7 +104,7 @@ audio{width:100%;margin-top:10px}
   <div class="drop" id="drop">
    <button type="button" class="rec" id="rec" aria-label="تسجيل">🎙️</button>
    <div class="timer" id="timer">00:00</div><div class="m" id="recs">اضغط للتسجيل المباشر</div>
-   <div class="m" style="margin:12px 0 6px">أو ارفع ملف (حتى 30 ميجا)</div>
+   <div class="m" style="margin:12px 0 6px">أو ارفع ملف (حتى 50 ميجا)</div>
    <input id="aud" type="file" accept="audio/*">
    <audio id="prev" controls hidden></audio>
   </div>
@@ -122,7 +116,7 @@ audio{width:100%;margin-top:10px}
    <div><label>البريد الإلكتروني</label><input id="mail" type="email"></div>
    <div><label>اسم البنك</label><input id="bank"></div>
    <div><label>رقم الحساب / الآيبان</label><input id="iban"></div>
-   <div><label>سعر الدقيقة</label><input id="rate"></div>
+   <div><label>سعر الساعة</label><div style="display:flex;gap:8px"><input id="rate" type="number" min="0" inputmode="decimal"><select id="cur" style="width:110px"><option>ريال</option><option>دولار</option></select></div></div>
    <div><label>استوديو منزلي؟</label><select id="studio"><option>نعم</option><option>لا</option></select></div>
   </div></div>
   <div class="bar" id="bar" hidden><i></i></div>
@@ -131,11 +125,11 @@ audio{width:100%;margin-top:10px}
  <div class="nav2"><button type="button" class="btn g" id="back">السابق</button><button type="button" class="btn" id="next">التالي</button></div>
  </form></div></section>
 
-<section id="ok" class="v"><div class="done"><div class="ok">✓</div><h2>تم التسجيل</h2><p class="m">سيظهر صوتك في الدليل بعد مراجعة الإدارة.</p><button class="btn" data-go="dir">تصفّح الأصوات</button></div></section>
+<section id="ok" class="v"><div class="done"><div class="ok">✓</div><h2>تم التسجيل</h2><p class="m">هتراجع الإدارة بياناتك وتتواصل معك قريبًا.</p><button class="btn g" data-go="home">الرجوع للرئيسية</button></div></section>
 </main>
 <script>
 var ENDPOINT="https://script.google.com/macros/s/AKfycbzJfgqgXZoqKfZECYFvobSSsuTVsDs5rnTP-WpoAYncBLAvvN0gG8L--KsHE4gZtjCr/exec";
-var MAX=30*1024*1024, CHUNK=1572864; // 1.5MB لكل جزء (مضاعف 3 للـ base64)
+var MAX=50*1024*1024, CHUNK=1572864; // 1.5MB لكل جزء (مضاعف 3 للـ base64)
 var CATS=["دبلجة أفلام ومسلسلات","إعلانات","كتب صوتية","تعليق وثائقي","ألعاب فيديو","IVR ومساعد صوتي","تعليمي / إلكترونيكس"];
 var DIAS=["فصحى","مصرية","خليجية","سعودية","شامية","مغاربية","إنجليزي"];
 var NATS=["مصري","سعودي","إماراتي","كويتي","قطري","بحريني","عماني","أردني","لبناني","سوري","عراقي","فلسطيني","يمني","سوداني","ليبي","تونسي","جزائري","مغربي"];
@@ -145,31 +139,14 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return
 function boxes(el,a,n){el.innerHTML=a.map(function(x){return '<label><input type="checkbox" name="'+n+'" value="'+x+'">'+x+'</label>'}).join("")}
 boxes($("cats"),CATS,"c");boxes($("dias"),DIAS,"d");
 $("nats").innerHTML=NATS.map(function(n){return '<option value="'+n+'">'}).join("");
-CATS.forEach(function(c){$("fCat").add(new Option(c,c))});DIAS.forEach(function(c){$("fDia").add(new Option(c,c))});
 $("wave").innerHTML=Array.apply(null,Array(40)).map(function(_,i){return '<i style="--h:'+(20+Math.abs(Math.sin(i*.7)*70))+'%;--d:'+(i*60)+'ms"></i>'}).join("");
 function vals(n){return all$('input[name="'+n+'"]:checked').map(function(e){return e.value})}
 
 function go(v){
  all$(".v").forEach(function(e){e.classList.toggle("on",e.id===v)});
  all$("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.go===v&&!b.classList.contains("cta"))});
- window.scrollTo(0,0);if(v==="dir"&&!loaded)load()}
+ window.scrollTo(0,0)}
 all$("[data-go]").forEach(function(b){b.onclick=function(){go(b.dataset.go)}});
-
-var rows=[],loaded=false;
-function load(){
- $("empty").textContent="جارٍ التحميل…";
- fetch(ENDPOINT).then(function(r){return r.json()}).then(function(d){rows=d;loaded=true;render()}).catch(function(){$("empty").textContent="تعذّر تحميل الأصوات حالياً."})}
-function render(){
- var q=$("q").value.trim(),c=$("fCat").value,d=$("fDia").value,g=$("fGen").value;
- var r=rows.filter(function(v){return(!q||(v.stage+" "+v.city).indexOf(q)>-1)&&(!c||v.cats.indexOf(c)>-1)&&(!d||v.dias.indexOf(d)>-1)&&(!g||v.gen==g)});
- $("empty").innerHTML=r.length?"":(rows.length?"لا توجد نتائج.":'لسه مفيش أصوات معتمدة. <br><br><button class="btn" onclick="go(\'reg\')">كن أول من يسجل</button>');
- $("list").innerHTML=r.map(function(v){
-  var u=v.audio?"https://drive.google.com/uc?export=download&id="+encodeURIComponent(v.audio):"";
-  return '<div class="box"><h3 style="margin:0">'+esc(v.stage)+'</h3><div class="m">'+[v.gen,v.age,v.nat,v.city,v.exp?v.exp+" سنة خبرة":""].filter(Boolean).map(esc).join(" · ")+'</div>'+
-  '<div class="tags">'+v.cats.concat(v.dias).map(function(t){return '<span>'+esc(t)+'</span>'}).join("")+'</div>'+
-  (v.bio?'<p style="margin:8px 0 0">'+esc(v.bio)+'</p>':'')+
-  (u?'<audio controls preload="none" src="'+u+'"></audio><a class="m" target="_blank" rel="noopener" href="https://drive.google.com/file/d/'+encodeURIComponent(v.audio)+'/view">فتح العينة في صفحة مستقلة</a>':'')+'</div>'}).join("")}
-["q","fCat","fDia","fGen"].forEach(function(i){$(i).oninput=render});
 
 // ===== الخطوات =====
 var step=0,sts=all$(".st");
@@ -181,7 +158,7 @@ function valid(){
  var bad=all$(".st.on [required]").filter(function(e){return!e.value.trim()})[0];
  if(bad){bad.focus();$("msg").textContent="كمّل الحقول المطلوبة (*)";return false}
  if(step===1&&!getFile()){$("msg").textContent="أضف عينة صوتية: سجّل مباشرة أو ارفع ملف";return false}
- if(step===1&&getFile().size>MAX){$("msg").textContent="الملف كبير — الحد الأقصى 30 ميجا";return false}
+ if(step===1&&getFile().size>MAX){$("msg").textContent="الملف كبير — الحد الأقصى 50 ميجا";return false}
  return true}
 $("back").onclick=function(){if(step)show(step-1)};
 $("next").onclick=function(){if(!valid())return;step<2?show(step+1):submit()};
@@ -199,7 +176,7 @@ $("rec").onclick=function(){
   var ch=[];rec=new MediaRecorder(st);
   rec.ondataavailable=function(e){if(e.data.size)ch.push(e.data)};
   rec.onstop=function(){clearInterval(tmr);st.getTracks().forEach(function(t){t.stop()});
-   blob=new Blob(ch,{type:rec.mimeType||"audio/webm"});$("aud").value="";preview(blob);
+   blob=new Blob(ch,{type:(rec.mimeType||"audio/webm").split(";")[0]});$("aud").value="";preview(blob);
    $("rec").classList.remove("live");$("rec").textContent="🎙️";$("recs").textContent="تم التسجيل — اضغط لإعادة التسجيل"};
   rec.start(1000);t0=Date.now();$("rec").classList.add("live");$("rec").textContent="⏹";$("recs").textContent="جارٍ التسجيل… اضغط للإيقاف";
   tmr=setInterval(function(){$("timer").textContent=fmt(Math.floor((Date.now()-t0)/1000))},500)
@@ -217,9 +194,9 @@ function submit(){
   if(i>=n)return Promise.resolve();
   return b64(f.slice(i*CHUNK,(i+1)*CHUNK)).then(function(a){return postRetry({up:id,i:i,data:a},2)}).then(function(){i++;bar.firstChild.style.width=Math.round(i/n*100)+"%";return up()})}
  up().then(function(){
-  var d={website:$("website").value,up:id,n:n,final:1,audioType:f.type};
+  var d={website:$("website").value,up:id,n:n,final:1,audioType:(f.type||"audio/webm").split(";")[0]};
   ["name","stage","gen","age","nat","city","exp","phone","mail","bank","iban","rate","studio","bio"].forEach(function(k){d[k]=$(k).value.trim()});
-  d.cats=vals("c");d.dias=vals("d");
+  d.cats=vals("c");d.dias=vals("d");if(d.rate)d.rate=d.rate+" "+$("cur").value+" / ساعة";
   return postRetry(d,2)
  }).then(function(){
   $("form").reset();blob=null;$("prev").hidden=true;$("drop").classList.remove("has");$("timer").textContent="00:00";$("recs").textContent="اضغط للتسجيل المباشر";
