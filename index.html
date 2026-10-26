@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>أصوات — دليل المدبلجين</title>
+<style>
+:root{--bg:#faf7f2;--s:#fff;--t:#1f1b16;--m:#6b6258;--l:#e5ddd1;--a:#b4491f;--c:#f3ebdf}
+@media(prefers-color-scheme:dark){:root{--bg:#17130f;--s:#211c16;--t:#f3ece2;--m:#a89d8f;--l:#3a3228;--a:#e2713f;--c:#2e271f}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:Tahoma,"Segoe UI",system-ui,sans-serif;line-height:1.6}
+header,nav,main{max-width:960px;margin:auto;padding-inline:20px}header{padding-top:28px}h1{margin:0;font-size:28px}header p{margin:4px 0 0;color:var(--m)}
+nav{display:flex;gap:8px;margin-top:12px}nav button{border:1px solid var(--l);background:var(--s);color:var(--t);padding:8px 16px;border-radius:999px;font:inherit;cursor:pointer}nav button.on{background:var(--a);color:#fff;border-color:var(--a)}
+main{padding-top:16px;padding-bottom:48px}section{display:none}section.on{display:block}
+.card{background:var(--s);border:1px solid var(--l);border-radius:14px;padding:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.r{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:560px){.r{grid-template-columns:1fr}}
+label{display:block;font-size:14px;margin:10px 0 4px;color:var(--m)}
+input,select,textarea{width:100%;padding:10px;border:1px solid var(--l);border-radius:10px;background:var(--bg);color:var(--t);font:inherit}
+.ck{display:flex;flex-wrap:wrap;gap:8px}.ck label{margin:0;display:flex;gap:6px;align-items:center;background:var(--c);color:var(--t);padding:6px 12px;border-radius:999px;font-size:14px}.ck input{width:auto}
+.priv{border:1px dashed var(--a);border-radius:12px;padding:12px;margin-top:16px}.priv h3{margin:0;font-size:15px;color:var(--a)}
+button.b{background:var(--a);color:#fff;border:0;padding:11px 22px;border-radius:10px;font:inherit;cursor:pointer;margin-top:16px}button.g{background:transparent;color:var(--a);border:1px solid var(--a);padding:9px 16px;border-radius:10px;font:inherit;cursor:pointer}button:disabled{opacity:.6}
+.tags span{display:inline-block;background:var(--c);border-radius:999px;padding:2px 10px;font-size:13px;margin:2px 0 0 4px}
+.m{color:var(--m);font-size:14px}audio{width:100%;margin-top:10px}
+.f{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;margin-bottom:16px}@media(max-width:700px){.f{grid-template-columns:1fr 1fr}}
+.hp{position:absolute;left:-9999px}#msg{margin-top:14px;font-weight:600}
+</style>
+</head>
+<body>
+<header><h1>🎙️ أصوات</h1><p>دليل متخصص للمدبلجين والمعلقين الصوتيين — اسمع الصوت المناسب لمشروعك</p></header>
+<nav><button data-t="dir" class="on">الأصوات</button><button data-t="reg">سجّل صوتك</button></nav>
+<main>
+<section id="dir" class="on">
+ <div class="f"><input id="q" placeholder="ابحث بالاسم أو المدينة…"><select id="fCat"><option value="">كل الأنواع</option></select><select id="fDia"><option value="">كل اللهجات</option></select><select id="fGen"><option value="">الكل</option><option>رجالي</option><option>نسائي</option><option>أطفال</option></select></div>
+ <div id="list" class="grid"></div><p id="empty" class="m"></p>
+</section>
+<section id="reg"><div class="card">
+ <h2 style="margin-top:0">تسجيل بيانات المدبلج</h2>
+ <p class="m">البيانات العامة تظهر للعملاء بعد اعتماد الإدارة، أما الجوال والبيانات المالية فتصل للإدارة فقط.</p>
+ <form id="form"><input class="hp" id="website" tabindex="-1" autocomplete="off">
+ <div class="r">
+  <div><label>الاسم الكامل *</label><input id="name" required></div>
+  <div><label>الاسم الفني (يظهر للعملاء)</label><input id="stage"></div>
+  <div><label>الفئة الصوتية</label><select id="gen"><option>رجالي</option><option>نسائي</option><option>أطفال</option></select></div>
+  <div><label>الفئة العمرية للصوت</label><select id="age"><option>شاب</option><option>متوسط العمر</option><option>كبير السن</option><option>طفولي</option></select></div>
+  <div><label>الدولة / المدينة</label><input id="city"></div>
+  <div><label>سنوات الخبرة</label><input id="exp" type="number" min="0"></div>
+ </div>
+ <label>أنواع الأداء</label><div class="ck" id="cats"></div>
+ <label>اللهجات واللغات</label><div class="ck" id="dias"></div>
+ <label>نبذة قصيرة</label><textarea id="bio" rows="3"></textarea>
+ <label>العينة الصوتية * (ملف أو تسجيل مباشر)</label><input id="aud" type="file" accept="audio/*">
+ <div style="margin-top:8px"><button type="button" class="g" id="rec">🔴 تسجيل من الميكروفون</button> <span id="recs" class="m"></span></div>
+ <div class="priv"><h3>🔒 بيانات خاصة — للإدارة فقط</h3><div class="r">
+  <div><label>رقم الجوال / واتساب *</label><input id="phone" type="tel" required></div>
+  <div><label>البريد الإلكتروني</label><input id="mail" type="email"></div>
+  <div><label>اسم البنك</label><input id="bank"></div>
+  <div><label>رقم الحساب / الآيبان</label><input id="iban"></div>
+  <div><label>سعر الدقيقة</label><input id="rate"></div>
+  <div><label>استوديو منزلي؟</label><select id="studio"><option>نعم</option><option>لا</option></select></div>
+ </div></div>
+ <button class="b" id="go">إرسال</button><div id="msg"></div>
+ </form></div></section>
+</main>
+<script>
+// ضع هنا رابط Web App بعد نشر Code.gs
+var ENDPOINT="https://script.google.com/macros/s/AKfycbzJfgqgXZoqKfZECYFvobSSsuTVsDs5rnTP-WpoAYncBLAvvN0gG8L--KsHE4gZtjCr/exec";
+var MAX=8*1024*1024;
+var CATS=["دبلجة أفلام ومسلسلات","إعلانات","كتب صوتية","تعليق وثائقي","ألعاب فيديو","IVR ومساعد صوتي","تعليمي / إلكترونيكس"];
+var DIAS=["فصحى","مصرية","خليجية","سعودية","شامية","مغاربية","إنجليزي"];
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function boxes(el,a,n){el.innerHTML=a.map(function(x){return '<label><input type="checkbox" name="'+n+'" value="'+x+'">'+x+'</label>'}).join("")}
+boxes($("cats"),CATS,"c");boxes($("dias"),DIAS,"d");
+CATS.forEach(function(c){$("fCat").add(new Option(c,c))});DIAS.forEach(function(c){$("fDia").add(new Option(c,c))});
+function vals(n){return Array.prototype.map.call(document.querySelectorAll('input[name="'+n+'"]:checked'),function(e){return e.value})}
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){document.querySelectorAll("nav button,section").forEach(function(e){e.classList.remove("on")});b.classList.add("on");$(b.dataset.t).classList.add("on")}});
+
+var all=[];
+function load(){
+ $("empty").textContent="جارٍ التحميل…";
+ fetch(ENDPOINT).then(function(r){return r.json()}).then(function(d){all=d;render()}).catch(function(){$("empty").textContent="تعذّر تحميل الأصوات حالياً."});
+}
+function render(){
+ var q=$("q").value.trim(),c=$("fCat").value,d=$("fDia").value,g=$("fGen").value;
+ var r=all.filter(function(v){return(!q||(v.stage+v.city).indexOf(q)>-1)&&(!c||v.cats.indexOf(c)>-1)&&(!d||v.dias.indexOf(d)>-1)&&(!g||v.gen==g)});
+ $("empty").textContent=r.length?"":"لا توجد نتائج.";
+ $("list").innerHTML=r.map(function(v){
+  var u=v.audio?"https://drive.google.com/uc?export=download&id="+encodeURIComponent(v.audio):"";
+  return '<div class="card"><h3 style="margin:0">'+esc(v.stage)+'</h3><div class="m">'+esc(v.gen)+' · '+esc(v.age)+(v.city?' · '+esc(v.city):'')+(v.exp?' · '+esc(v.exp)+' سنة خبرة':'')+'</div>'+
+  '<div class="tags">'+v.cats.concat(v.dias).map(function(t){return '<span>'+esc(t)+'</span>'}).join("")+'</div>'+
+  (v.bio?'<p style="margin:8px 0 0">'+esc(v.bio)+'</p>':'')+
+  (u?'<audio controls preload="none" src="'+u+'"></audio><a class="m" target="_blank" rel="noopener" href="https://drive.google.com/file/d/'+encodeURIComponent(v.audio)+'/view">فتح العينة في صفحة مستقلة</a>':'')+'</div>'}).join("")}
+["q","fCat","fDia","fGen"].forEach(function(i){$(i).oninput=render});
+
+var blob=null,rec=null;
+$("rec").onclick=function(){
+ if(rec&&rec.state==="recording"){rec.stop();return}
+ if(!navigator.mediaDevices){alert("الميكروفون غير متاح — ارفع ملف");return}
+ navigator.mediaDevices.getUserMedia({audio:true}).then(function(st){
+  var ch=[];rec=new MediaRecorder(st);
+  rec.ondataavailable=function(e){ch.push(e.data)};
+  rec.onstop=function(){blob=new Blob(ch,{type:rec.mimeType});st.getTracks().forEach(function(t){t.stop()});$("recs").textContent="تم التسجيل ✓";$("rec").textContent="🔴 إعادة التسجيل"};
+  rec.start();$("recs").textContent="جارٍ التسجيل… اضغط للإيقاف";$("rec").textContent="⏹ إيقاف"
+ }).catch(function(){alert("تعذّر الوصول للميكروفون — ارفع ملف")})};
+function b64(b){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(String(r.result).split(",")[1])};r.onerror=rej;r.readAsDataURL(b)})}
+$("form").onsubmit=function(ev){
+ ev.preventDefault();
+ var f=$("aud").files[0]||blob,msg=$("msg");
+ if(!f){msg.textContent="أضف عينة صوتية";return}
+ if(f.size>MAX){msg.textContent="الملف كبير — الحد الأقصى 8 ميجا";return}
+ $("go").disabled=true;msg.textContent="جارٍ الإرسال…";
+ b64(f).then(function(a){
+  var d={website:$("website").value,audio:a,audioType:f.type};
+  ["name","stage","gen","age","city","exp","phone","mail","bank","iban","rate","studio","bio"].forEach(function(k){d[k]=$(k).value.trim()});
+  d.cats=vals("c");d.dias=vals("d");
+  return fetch(ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(d)})
+ }).then(function(){msg.textContent="✅ تم التسجيل، وسيظهر صوتك في الدليل بعد مراجعة الإدارة.";$("form").reset();blob=null;$("recs").textContent="";$("go").disabled=false})
+ .catch(function(){msg.textContent="حصل خطأ، حاول مرة أخرى";$("go").disabled=false})};
+load();
+</script>
+</body></html>
